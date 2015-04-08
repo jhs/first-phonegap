@@ -9,6 +9,9 @@
     "installed_plugins": {
         "org.apache.cordova.network-information": {
             "PACKAGE_NAME": "com.example.hello"
+        },
+        "org.apache.cordova.console": {
+            "PACKAGE_NAME": "com.example.hello"
         }
     },
     "dependent_plugins": {}
