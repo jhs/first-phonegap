@@ -9,4 +9,12 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <feature name="Console">
+        <param name="id" value="org.apache.cordova.console" />
+        <param name="installPath" value="org.apache.cordova.console" />
+    </feature>
+    <feature name="Network Information">
+        <param name="id" value="org.apache.cordova.network-information" />
+        <param name="installPath" value="org.apache.cordova.network-information" />
+    </feature>
 </widget>
