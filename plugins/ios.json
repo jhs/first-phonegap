@@ -11,6 +11,10 @@
                         {
                             "xml": "true",
                             "count": 1
+                        },
+                        {
+                            "xml": true,
+                            "count": 1
                         }
                     ]
                 }
