@@ -47,7 +47,14 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
-        console.log('ok')
+        console.log('string :%s: %j was json', 'a-string', [1,2,3])
+        console.log({object:"I am an object"})
+        console.log('json %j', {obj:'I am an object in JSON?'})
+
+        setTimeout(function() {
+        var el = parentElement.querySelector('#jason')
+        el.setAttribute('style', 'display:block;')
+        }, 3000)
     }
 };
 
