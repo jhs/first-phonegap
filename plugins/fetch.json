@@ -10,5 +10,11 @@
             "type": "registry",
             "id": "org.apache.cordova.console"
         }
+    },
+    "org.apache.cordova.geolocation": {
+        "source": {
+            "type": "registry",
+            "id": "\norg.apache.cordova.geolocation\n"
+        }
     }
 }

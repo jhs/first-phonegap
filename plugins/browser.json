@@ -12,6 +12,9 @@
         },
         "org.apache.cordova.console": {
             "PACKAGE_NAME": "com.example.hello"
+        },
+        "org.apache.cordova.geolocation": {
+            "PACKAGE_NAME": "com.example.hello"
         }
     },
     "dependent_plugins": {}
