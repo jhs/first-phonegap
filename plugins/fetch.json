@@ -14,7 +14,7 @@
     "org.apache.cordova.geolocation": {
         "source": {
             "type": "registry",
-            "id": "\norg.apache.cordova.geolocation\n"
+            "id": "org.apache.cordova.geolocation"
         }
     },
     "com.phonegap.plugins.barcodescanner": {
