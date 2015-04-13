@@ -16,5 +16,11 @@
             "type": "registry",
             "id": "\norg.apache.cordova.geolocation\n"
         }
+    },
+    "com.phonegap.plugins.barcodescanner": {
+        "source": {
+            "type": "registry",
+            "id": "com.phonegap.plugins.barcodescanner"
+        }
     }
 }
