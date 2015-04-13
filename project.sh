@@ -136,8 +136,8 @@ if [[ $init = 1 ]] ; then
 	# TODO Check if platforms have already been added
 	# 'cordova platforms'
 
-	message_info "Adding Android platform..."
-	cordova platform add android
+#	message_info "Adding Android platform..."
+#	cordova platform add android
 
 	message_info "Adding iOS platform..."
 	cordova platform add ios
@@ -147,8 +147,8 @@ fi
 # Merge platform overrides.
 
 if [[ $init = 1 ]] || [[ $merge = 1 ]] ; then
-	message_info "Merging Android platform customizations..."
-	cp -R platform-merges/android/* platforms/android/
+#	message_info "Merging Android platform customizations..."
+#	cp -R platform-merges/android/* platforms/android/
 
 	message_info "Merging iOS platform customizations..."
 	cp -R platform-merges/ios/* platforms/ios/
@@ -161,18 +161,18 @@ if [[ $init = 1 ]] || [[ $icons = 1 ]] ; then
 	# This would probably be better if we parsed www/config.xml,
 	# but for now we know the files and where they need to go.
 
-	message_info "Copying Android app icons and splash screen images..."
-	cp www/res/icon/android/icon-36-ldpi.png platforms/android/res/drawable-ldpi/icon.png
-	cp www/res/icon/android/icon-48-mdpi.png platforms/android/res/drawable-mdpi/icon.png
-	cp www/res/icon/android/icon-72-hdpi.png platforms/android/res/drawable-hdpi/icon.png
-	cp www/res/icon/android/icon-96-xhdpi.png platforms/android/res/drawable-xhdpi/icon.png
-	cp www/res/icon/android/icon-96-xhdpi.png platforms/android/res/drawable/icon.png
-
-	cp www/res/screen/android/screen-ldpi-portrait.png platforms/android/res/drawable-ldpi/screen.png
-	cp www/res/screen/android/screen-mdpi-portrait.png platforms/android/res/drawable-mdpi/screen.png
-	cp www/res/screen/android/screen-hdpi-portrait.png platforms/android/res/drawable-hdpi/screen.png
-	cp www/res/screen/android/screen-xhdpi-portrait.png platforms/android/res/drawable-xhdpi/screen.png
-	cp www/res/screen/android/screen-xhdpi-portrait.png platforms/android/res/drawable/screen.png
+#	message_info "Copying Android app icons and splash screen images..."
+#	cp www/res/icon/android/icon-36-ldpi.png platforms/android/res/drawable-ldpi/icon.png
+#	cp www/res/icon/android/icon-48-mdpi.png platforms/android/res/drawable-mdpi/icon.png
+#	cp www/res/icon/android/icon-72-hdpi.png platforms/android/res/drawable-hdpi/icon.png
+#	cp www/res/icon/android/icon-96-xhdpi.png platforms/android/res/drawable-xhdpi/icon.png
+#	cp www/res/icon/android/icon-96-xhdpi.png platforms/android/res/drawable/icon.png
+#
+#	cp www/res/screen/android/screen-ldpi-portrait.png platforms/android/res/drawable-ldpi/screen.png
+#	cp www/res/screen/android/screen-mdpi-portrait.png platforms/android/res/drawable-mdpi/screen.png
+#	cp www/res/screen/android/screen-hdpi-portrait.png platforms/android/res/drawable-hdpi/screen.png
+#	cp www/res/screen/android/screen-xhdpi-portrait.png platforms/android/res/drawable-xhdpi/screen.png
+#	cp www/res/screen/android/screen-xhdpi-portrait.png platforms/android/res/drawable/screen.png
 
 	message_info "Copying iOS app icons and splash screen images..."
 	cp www/res/icon/ios/icon-57.png platforms/ios/Project/Resources/icons/icon.png
@@ -211,8 +211,8 @@ fi
 # ----
 # Prepare Platforms
 if [[ $init = 1 ]] || [[ $update = 1 ]] ; then
-	message_info "Syncing 'www' with Android platform..."
-	cordova prepare android
+#	message_info "Syncing 'www' with Android platform..."
+#	cordova prepare android
 
 	message_info "Syncing 'www' with iOS platform..."
 	cordova prepare ios
