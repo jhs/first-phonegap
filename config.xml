@@ -21,4 +21,7 @@
     <feature name="Geolocation">
         <param name="id" value="org.apache.cordova.geolocation" />
     </feature>
+    <feature name="Device">
+        <param name="id" value="org.apache.cordova.device" />
+    </feature>
 </widget>
