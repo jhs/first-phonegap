@@ -17,24 +17,7 @@ function onDeviceReady() {
     event_type = 'touchend'
 
   var img = document.getElementById('face')
-  img.addEventListener(event_type, run_scan)
-
-  function run_scan(ev) {
-    console.log('Scan for barcode! touches=' + !!ev.touches)
-    console.log(JSON.stringify(ev))
-    console.log('What is cordova: ' + JSON.stringify(Object.keys(cordova)))
-    cordova.plugins.barcodeScanner.scan(
-      function (result) {
-          console.log("We got a barcode\n" +
-                "Result: " + result.text + "\n" +
-                "Format: " + result.format + "\n" +
-                "Cancelled: " + result.cancelled);
-      },
-      function (error) {
-          console.log("Scanning failed: " + error);
-      });
-    console.log('Started scan')
-  }
+  img.addEventListener(event_type, take_photo)
 
 //  console.log('Get position')
 //  getCurrentPosition(function(er, pos) {
@@ -52,6 +35,34 @@ function onDeviceReady() {
 //                'Speed: '             + pos.coords.speed             + '\n' +
 //                'Timestamp: '         + pos.timestamp                + '\n')
 //  })
+}
+
+function take_photo() {
+
+  var opts = { quality : 75,
+               destinationType : Camera.DestinationType.FILE_URI,
+               sourceType : Camera.PictureSourceType.CAMERA,
+               allowEdit : true,
+               encodingType: Camera.EncodingType.JPEG,
+               targetWidth: 100,
+               targetHeight: 100,
+               //popoverOptions: CameraPopoverOptions,
+               saveToPhotoAlbum: false }
+
+  console.log('Take photo: ' + JSON.stringify(opts))
+  navigator.camera.getPicture(function(ok) { done(null, ok) }, function(er) { done(er) }, opts);
+
+  function done(er, img) {
+    if (er)
+      return console.log('Camera error: ' + er)
+
+    console.log('Got image: ' + img)
+    var image = document.getElementById('cameraImg')
+    if (device.platform == 'browser')
+      image.src = 'data:image/jpeg;base64,' + img
+    else
+      image.src = img
+  }
 }
 
 function onOnline(x) {
