@@ -24,4 +24,7 @@
     <feature name="Device">
         <param name="id" value="org.apache.cordova.device" />
     </feature>
+    <feature name="Camera">
+        <param name="id" value="org.apache.cordova.camera" />
+    </feature>
 </widget>
