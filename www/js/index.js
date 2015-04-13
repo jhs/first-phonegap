@@ -5,7 +5,7 @@ document.addEventListener('online', onOnline)
 document.addEventListener('offline', onOffline)
 
 function onDeviceReady() {
-  console.log('Device ready; touch=' + IS_TOUCH)
+  console.log('Device ready: ' + JSON.stringify(device))
   var $ = document.querySelector
 
   var parent = document.getElementById('deviceready')
