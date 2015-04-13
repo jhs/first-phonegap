@@ -40,12 +40,13 @@ function onDeviceReady() {
 function take_photo() {
 
   var opts = { quality : 75,
-               destinationType : Camera.DestinationType.FILE_URI,
+               destinationType : Camera.DestinationType.DATA_URL,
                sourceType : Camera.PictureSourceType.CAMERA,
                allowEdit : true,
                encodingType: Camera.EncodingType.JPEG,
                targetWidth: 100,
                targetHeight: 100,
+               cameraDirection: Camera.Direction.FRONT,
                //popoverOptions: CameraPopoverOptions,
                saveToPhotoAlbum: false }
 
@@ -59,7 +60,7 @@ function take_photo() {
     console.log('Got image: ' + img)
     var image = document.getElementById('cameraImg')
     console.log('Found image element: ' + !!image)
-    if (device.platform == 'browser')
+    if (device.platform == 'browser' || true) // XXX forcing DATA_URL above
       image.src = 'data:image/jpeg;base64,' + img
     else {
       console.log('Set src: ' + img)
