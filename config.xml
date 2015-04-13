@@ -1,15 +1,23 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.example.hello" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.proven-corporation.hello"
+        version="0.0.1"
+        xmlns="http://www.w3.org/ns/widgets"
+        xmlns:cdv="http://cordova.apache.org/ns/1.0">
+
     <name>Jason Smith</name>
+
     <description>
       My Apache Cordova hello world program
     </description>
+
     <icon src="www/img/jason.png"/>
     <author email="jason.h.smith@gmail.com" href="http://cordova.io">
         Jason Smith
     </author>
+
     <content src="index.html" />
     <access origin="*" />
+
     <feature name="Console">
         <param name="id" value="org.apache.cordova.console" />
         <param name="installPath" value="org.apache.cordova.console" />
