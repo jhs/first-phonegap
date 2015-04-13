@@ -58,10 +58,13 @@ function take_photo() {
 
     console.log('Got image: ' + img)
     var image = document.getElementById('cameraImg')
+    console.log('Found image element: ' + !!image)
     if (device.platform == 'browser')
       image.src = 'data:image/jpeg;base64,' + img
-    else
+    else {
+      console.log('Set src: ' + img)
       image.src = img
+    }
   }
 }
 
