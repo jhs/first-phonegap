@@ -8,6 +8,7 @@
     <author email="jason.h.smith@gmail.com" href="http://cordova.io">
         Jason Smith
     </author>
+    <preference name="CameraUsesGeolocation" value="true" />
     <content src="index.html" />
     <access origin="*" />
     <feature name="Console">
