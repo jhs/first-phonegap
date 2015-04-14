@@ -79,16 +79,17 @@ function fix_browser_photo() {
 }
 
 function take_photo() {
-  var opts = { quality : 75,
+  var opts = { quality : 50,
                destinationType : Camera.DestinationType.DATA_URL,
                sourceType : Camera.PictureSourceType.CAMERA,
                allowEdit : false,
                encodingType: Camera.EncodingType.JPEG,
-               targetWidth: 50,
-               targetHeight: 50,
+               targetWidth: 300,
+               targetHeight: 300,
                cameraDirection: Camera.Direction.FRONT,
                //popoverOptions: CameraPopoverOptions,
-               saveToPhotoAlbum: false }
+               saveToPhotoAlbum: false
+             }
 
   console.log('Take photo: ' + JSON.stringify(opts))
   navigator.camera.getPicture(function(ok) { done(null, ok) }, function(er) { done(er) }, opts);
@@ -106,9 +107,11 @@ function take_photo() {
     if (! photo)
       return console.log('Error: no photo returned')
 
-    console.log('Got photo')
-    jQuery('.new-photo').attr('src', 'data:image/jpeg;base64,'+photo)
+    console.log('Got photo; length: ' + photo.length)
     window.location.hash = '#prep-photo'
+
+    var prefix = (device.platform == 'browser') ? 'data:image/png;base64,' : 'data:image/jpeg;base64,'
+    jQuery('.new-photo').attr('src', prefix+photo)
   }
 }
 
