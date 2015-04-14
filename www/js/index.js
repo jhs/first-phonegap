@@ -1,4 +1,5 @@
 var IS_TOUCH = ('ontouchstart' in window)
+var CLICK = IS_TOUCH ? 'touchend' : 'click'
 
 document.addEventListener('deviceready', onDeviceReady)
 document.addEventListener('online', onOnline)
@@ -12,23 +13,17 @@ function onDeviceReady() {
   if (! jQuery.mobile)
     return console.log('Error: jQuery.mobile not found')
 
+  window.location.hash = ''
   StatusBar.styleDefault()
   StatusBar.overlaysWebView(true);
   navigator.splashscreen.hide()
 
+  fix_browser_photo()
+
   console.log('Start')
 
-  //debugger
-  //jQuery('#menu').menu()
+  jQuery('#photo-button').on(CLICK, take_photo)
 
-//  var parent = document.getElementById('deviceready')
-//  parent.querySelector('.listening').setAttribute('style', 'display:none')
-//  parent.querySelector('.received').setAttribute('style', 'display:block')
-//
-//  var event_type = 'click'
-//  if (IS_TOUCH)
-//    event_type = 'touchend'
-//
 //  var img = document.getElementById('face')
 //  img.addEventListener(event_type, take_photo)
 
@@ -50,15 +45,47 @@ function onDeviceReady() {
 //  })
 }
 
-function take_photo() {
+function fix_browser_photo() {
+  if (device.platform != 'browser')
+    return console.log('jQuery Mobile photo fix: Not a browser')
 
+  var getUserMedia = null
+  function wrapped(opts, on_ok, on_er) {
+    if (getUserMedia)
+      return getUserMedia.call(navigator, opts, wrapped_on_ok, on_er)
+
+    function wrapped_on_ok(stream) {
+      on_ok(stream)
+
+      console.log('Move browser video capture')
+      var video = $('video')
+      video.detach()
+      video.appendTo('#main')
+      video[0].play()
+
+      var capture_btn = $('button').filter(function(i,el) { return el.innerHTML == 'Capture!' })
+      capture_btn.detach()
+      capture_btn.appendTo('#main')
+    }
+  }
+
+  wrapped.is_fixed = true
+  if (navigator.mozGetUserMedia && !navigator.mozGetUserMedia.is_fixed) {
+    console.log('jQuery Mobile photo fix: Mozilla')
+    getUserMedia = navigator.mozGetUserMedia
+    navigator.mozGetUserMedia = wrapped
+  } else
+    console.log('jQuery Mobile photo fix: Unknown')
+}
+
+function take_photo() {
   var opts = { quality : 75,
                destinationType : Camera.DestinationType.DATA_URL,
                sourceType : Camera.PictureSourceType.CAMERA,
-               allowEdit : true,
+               allowEdit : false,
                encodingType: Camera.EncodingType.JPEG,
-               targetWidth: 100,
-               targetHeight: 100,
+               targetWidth: 50,
+               targetHeight: 50,
                cameraDirection: Camera.Direction.FRONT,
                //popoverOptions: CameraPopoverOptions,
                saveToPhotoAlbum: false }
@@ -66,19 +93,22 @@ function take_photo() {
   console.log('Take photo: ' + JSON.stringify(opts))
   navigator.camera.getPicture(function(ok) { done(null, ok) }, function(er) { done(er) }, opts);
 
-  function done(er, img) {
+  // Move the browser video/image capture into the visible UI.
+//  if (device.platform == 'browser')
+//    setTimeout(fix_capture_button, 500)
+
+  function fix_capture_button() {
+  }
+
+  function done(er, photo) {
     if (er)
       return console.log('Camera error: ' + er)
+    if (! photo)
+      return console.log('Error: no photo returned')
 
-    console.log('Got image: ' + img)
-    var image = document.getElementById('cameraImg')
-    console.log('Found image element: ' + !!image)
-    if (device.platform == 'browser' || true) // XXX forcing DATA_URL above
-      image.src = 'data:image/jpeg;base64,' + img
-    else {
-      console.log('Set src: ' + img)
-      image.src = img
-    }
+    console.log('Got photo')
+    jQuery('.new-photo').attr('src', 'data:image/jpeg;base64,'+photo)
+    window.location.hash = '#prep-photo'
   }
 }
 
