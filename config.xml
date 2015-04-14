@@ -8,34 +8,17 @@
     <author email="jason.h.smith@gmail.com" href="http://cordova.io">
         Jason Smith
     </author>
-
     <preference name="CameraUsesGeolocation" value="true" />
     <preference name="SplashScreen" value="res/screen/splash_screen.9.png" />
-    <!-- <preference name="SplashScreenDelay" value="10000" /> -->
     <preference name="AutoHideSplashScreen" value="false" />
-
     <platform name="browser">
-      <!-- images are determined by width and height. The following are supported -->
-      <splash src="res/screen/splash_screen.9.png" />
+        <splash src="res/screen/splash_screen.9.png" />
     </platform>
-
     <platform name="ios">
-      <!-- images are determined by width and height. The following are supported -->
-      <splash src="res/screen/splash_screen.9.png" width="640" height="1136"/> <!-- iPhone 5S -->
-      <splash src="res/screen/splash_screen.9.png" width="750" height="1334"/> <!-- iPhone 6 -->
-      <splash src="res/screen/splash_screen.9.png" width="1080" height="1920"/> <!-- iPhone 6 Plus -->
-      <!--
-      <splash src="res/screen/ios/Default@2x~iphone.png" width="640" height="960"/>
-      <splash src="res/screen/ios/Default-Portrait~ipad.png" width="768" height="1024"/>
-      <splash src="res/screen/ios/Default-Portrait@2x~ipad.png" width="1536" height="2048"/>
-      <splash src="res/screen/ios/Default-Landscape~ipad.png" width="1024" height="768"/>
-      <splash src="res/screen/ios/Default-Landscape@2x~ipad.png" width="2048" height="1536"/>
-      <splash src="res/screen/ios/Default-667h.png" width="750" height="1334"/>
-      <splash src="res/screen/ios/Default-736h.png" width="1242" height="2208"/>
-      <splash src="res/screen/ios/Default-Landscape-736h.png" width="2208" height="1242"/>
-      -->
+        <splash height="1136" src="res/screen/splash_screen.9.png" width="640" />
+        <splash height="1334" src="res/screen/splash_screen.9.png" width="750" />
+        <splash height="1920" src="res/screen/splash_screen.9.png" width="1080" />
     </platform>
-
     <content src="index.html" />
     <access origin="*" />
     <feature name="Console">
@@ -57,5 +40,8 @@
     </feature>
     <feature name="Splashscreen">
         <param name="id" value="org.apache.cordova.splashscreen" />
+    </feature>
+    <feature name="StatusBar">
+        <param name="id" value="org.apache.cordova.statusbar" />
     </feature>
 </widget>
