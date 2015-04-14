@@ -6,20 +6,27 @@ document.addEventListener('offline', onOffline)
 
 function onDeviceReady() {
   console.log('Device ready: ' + JSON.stringify(device))
+
+  if (typeof jQuery != 'function')
+    return console.log('Error: jQuery not found')
+  if (! jQuery.ui)
+    return console.log('Error: jQuery.ui not found')
+
   navigator.splashscreen.hide()
 
-  console.log('typeof jQuery = ' + typeof jQuery)
+  debugger
+  jQuery('#menu').menu()
 
-  var parent = document.getElementById('deviceready')
-  parent.querySelector('.listening').setAttribute('style', 'display:none')
-  parent.querySelector('.received').setAttribute('style', 'display:block')
-
-  var event_type = 'click'
-  if (IS_TOUCH)
-    event_type = 'touchend'
-
-  var img = document.getElementById('face')
-  img.addEventListener(event_type, take_photo)
+//  var parent = document.getElementById('deviceready')
+//  parent.querySelector('.listening').setAttribute('style', 'display:none')
+//  parent.querySelector('.received').setAttribute('style', 'display:block')
+//
+//  var event_type = 'click'
+//  if (IS_TOUCH)
+//    event_type = 'touchend'
+//
+//  var img = document.getElementById('face')
+//  img.addEventListener(event_type, take_photo)
 
 //  console.log('Get position')
 //  getCurrentPosition(function(er, pos) {
