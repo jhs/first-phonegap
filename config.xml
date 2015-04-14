@@ -8,9 +8,13 @@
     <author email="jason.h.smith@gmail.com" href="http://cordova.io">
         Jason Smith
     </author>
+
     <preference name="CameraUsesGeolocation" value="true" />
     <preference name="SplashScreen" value="res/screen/splash_screen.9.png" />
     <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="StatusBarOverlaysWebView" value="false" />
+    <preference name="StatusBarBackgroundColor" value="#000000" />
+
     <platform name="browser">
         <splash src="res/screen/splash_screen.9.png" />
     </platform>
@@ -43,5 +47,6 @@
     </feature>
     <feature name="StatusBar">
         <param name="id" value="org.apache.cordova.statusbar" />
+        <param name="ios-package" value="CDVStatusBar" onload="true" />
     </feature>
 </widget>
