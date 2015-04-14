@@ -9,13 +9,14 @@ function onDeviceReady() {
 
   if (typeof jQuery != 'function')
     return console.log('Error: jQuery not found')
-  if (! jQuery.ui)
-    return console.log('Error: jQuery.ui not found')
+  if (! jQuery.mobile)
+    return console.log('Error: jQuery.mobile not found')
 
   navigator.splashscreen.hide()
+  console.log('Start')
 
-  debugger
-  jQuery('#menu').menu()
+  //debugger
+  //jQuery('#menu').menu()
 
 //  var parent = document.getElementById('deviceready')
 //  parent.querySelector('.listening').setAttribute('style', 'display:none')
