@@ -1,0 +1,7 @@
+.ui-mobile [data-role="page"] {
+  /* The entire application page */
+}
+
+[data-role="page"] > [data-role="header"] {
+  padding-top: 8px;
+}

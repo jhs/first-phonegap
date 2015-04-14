@@ -12,7 +12,10 @@ function onDeviceReady() {
   if (! jQuery.mobile)
     return console.log('Error: jQuery.mobile not found')
 
+  StatusBar.styleDefault()
+  StatusBar.overlaysWebView(true);
   navigator.splashscreen.hide()
+
   console.log('Start')
 
   //debugger
