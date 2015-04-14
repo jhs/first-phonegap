@@ -80,12 +80,11 @@ function take_photo() {
 }
 
 function onOnline(x) {
-  console.log('Online')
-  console.log(x)
+  jQuery('#network-status').html('Online')
 }
 
 function onOffline() {
-  console.log('Offline')
+  jQuery('#network-status').html('Offline')
 }
 
 function getCurrentPosition(callback) {
