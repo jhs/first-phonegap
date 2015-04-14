@@ -74,6 +74,10 @@ function fix_browser_photo() {
     console.log('jQuery Mobile photo fix: Mozilla')
     getUserMedia = navigator.mozGetUserMedia
     navigator.mozGetUserMedia = wrapped
+  } else if (navigator.getUserMedia && !navigator.getUserMedia.is_fixed) {
+    console.log('jQuery Mobile photo fix: Chrome')
+    getUserMedia = navigator.getUserMedia
+    navigator.getUserMedia = wrapped
   } else
     console.log('jQuery Mobile photo fix: Unknown')
 }
