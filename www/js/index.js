@@ -6,7 +6,7 @@ document.addEventListener('offline', onOffline)
 
 function onDeviceReady() {
   console.log('Device ready: ' + JSON.stringify(device))
-  var $ = document.querySelector
+  navigator.splashscreen.hide()
 
   var parent = document.getElementById('deviceready')
   parent.querySelector('.listening').setAttribute('style', 'display:none')
