@@ -6,3 +6,13 @@
 [data-role="page"] > [data-role="header"] {
   /* padding-top: 8px; */
 }
+
+img.new-photo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ui-page-theme-a .ui-bar-inherit {
+  margin-top: 0;
+}

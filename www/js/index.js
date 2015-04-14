@@ -23,26 +23,6 @@ function onDeviceReady() {
   console.log('Start')
 
   jQuery('#photo-button').on(CLICK, take_photo)
-
-//  var img = document.getElementById('face')
-//  img.addEventListener(event_type, take_photo)
-
-//  console.log('Get position')
-//  getCurrentPosition(function(er, pos) {
-//    if (er) {
-//      console.log('Geo error '+er.code + ': ' + er.message)
-//      return console.log(er)
-//    }
-//
-//    console.log('Latitude: '          + pos.coords.latitude          + '\n' +
-//                'Longitude: '         + pos.coords.longitude         + '\n' +
-//                'Altitude: '          + pos.coords.altitude          + '\n' +
-//                'Accuracy: '          + pos.coords.accuracy          + '\n' +
-//                'Altitude Accuracy: ' + pos.coords.altitudeAccuracy  + '\n' +
-//                'Heading: '           + pos.coords.heading           + '\n' +
-//                'Speed: '             + pos.coords.speed             + '\n' +
-//                'Timestamp: '         + pos.timestamp                + '\n')
-//  })
 }
 
 function fix_browser_photo() {
@@ -86,7 +66,7 @@ function take_photo() {
   var opts = { quality : 50,
                destinationType : Camera.DestinationType.DATA_URL,
                sourceType : Camera.PictureSourceType.CAMERA,
-               allowEdit : false,
+               allowEdit : true,
                encodingType: Camera.EncodingType.JPEG,
                targetWidth: 300,
                targetHeight: 300,
@@ -109,6 +89,16 @@ function take_photo() {
 
     var prefix = (device.platform == 'browser') ? 'data:image/png;base64,' : 'data:image/jpeg;base64,'
     jQuery('.new-photo').attr('src', prefix+photo)
+
+    debugger
+    getCurrentPosition(function(er, pos) {
+      if (er)
+        return console.log('No position information: ' + er.code+': ' + er.message)
+
+      $('input[name="form-photo-latitude"]').val(pos.coords.latitude)
+      $('input[name="form-photo-longitude"]').val(pos.coords.longitude)
+      $('input[name="form-photo-timestamp"]').val(pos.timestamp)
+    })
   }
 }
 
@@ -123,6 +113,16 @@ function onOffline() {
 function getCurrentPosition(callback) {
   return navigator.geolocation.getCurrentPosition(on_ok, on_er)
 
-  function on_ok(pos) { callback(null, pos) }
-  function on_er(er)  { callback(er)        }
+  function on_er(er) { callback(er) }
+  function on_ok(pos) {
+    console.log('Latitude: '          + pos.coords.latitude        )
+    console.log('Longitude: '         + pos.coords.longitude       )
+    console.log('Altitude: '          + pos.coords.altitude        )
+    console.log('Accuracy: '          + pos.coords.accuracy        )
+    console.log('Altitude Accuracy: ' + pos.coords.altitudeAccuracy)
+    console.log('Heading: '           + pos.coords.heading         )
+    console.log('Speed: '             + pos.coords.speed           )
+    console.log('Timestamp: '         + pos.timestamp              )
+    callback(null, pos)
+  }
 }
