@@ -8,6 +8,8 @@ function onDeviceReady() {
   console.log('Device ready: ' + JSON.stringify(device))
   navigator.splashscreen.hide()
 
+  console.log('typeof jQuery = ' + typeof jQuery)
+
   var parent = document.getElementById('deviceready')
   parent.querySelector('.listening').setAttribute('style', 'display:none')
   parent.querySelector('.received').setAttribute('style', 'display:block')
