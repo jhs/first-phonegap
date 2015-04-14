@@ -15,7 +15,7 @@ function onDeviceReady() {
 
   window.location.hash = ''
   StatusBar.styleDefault()
-  StatusBar.overlaysWebView(true);
+  StatusBar.overlaysWebView(false);
   navigator.splashscreen.hide()
 
   fix_browser_photo()
