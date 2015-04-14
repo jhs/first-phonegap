@@ -98,13 +98,6 @@ function take_photo() {
   console.log('Take photo: ' + JSON.stringify(opts))
   navigator.camera.getPicture(function(ok) { done(null, ok) }, function(er) { done(er) }, opts);
 
-  // Move the browser video/image capture into the visible UI.
-//  if (device.platform == 'browser')
-//    setTimeout(fix_capture_button, 500)
-
-  function fix_capture_button() {
-  }
-
   function done(er, photo) {
     if (er)
       return console.log('Camera error: ' + er)
