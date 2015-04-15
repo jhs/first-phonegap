@@ -51,6 +51,49 @@ function search_photos() {
 
 function photo_results(photos) {
   console.log('Photo results: ' + photos.length)
+
+  var result = jQuery('#search-result')
+  result.empty()
+
+  row('Total photos', photos.length)
+
+  // Count the private photos and the tags.
+  var private_count = 0
+  var tags = {}
+
+  for (var i = 0; i < photos.length; i++) {
+    if (photos[i].is_private)
+      private_count += 1
+
+    photos[i].tags.forEach(function(tag) {
+      tags[tag] = 1 + (tags[tag] || 0)
+    })
+  }
+
+  row('Private photos', private_count)
+
+  // Display the top 3 tags.
+  tags = Object.keys(tags).map(function(name) { return {name:name, count:tags[name]} })
+  tags.sort(cmp_tag_tuple)
+  if (tags.length > 0) {
+    row('&nbsp;', '&nbsp;')
+    result.append('<div class="ui-block-a"><h3>Tags</h3></div>')
+
+    tags.forEach(function(tag, i) {
+      if (i < 3)
+        row(tag.name, tag.count)
+    })
+  }
+
+  function row(key, val) {
+    result.append('<div class="ui-block-a"><strong>' + key + '</strong></div>')
+    result.append('<div class="ui-block-b">' + val + '</div>')
+  }
+
+  function cmp_tag_tuple(A, B) {
+    // Make the sort descending, so B - A.
+    return B.count - A.count
+  }
 }
 
 function take_photo() {

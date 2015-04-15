@@ -26,5 +26,10 @@ img.new-photo {
   margin-bottom: 2em;
 }
 
+#search-result h3 {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
 .ui-grid-a.left-third .ui-block-a { width: 35%; }
 .ui-grid-a.left-third .ui-block-b { width: 65%; }
