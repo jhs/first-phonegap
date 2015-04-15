@@ -24,7 +24,8 @@ function onDeviceReady() {
   search_photos()
 
   // Interactivity
-  jQuery('#photo-button').on(CLICK, take_photo)
+  jQuery('#camera-button').on(CLICK, take_photo)
+  jQuery('#library-button').on(CLICK, photo_from_library)
   jQuery('#form-photo').submit(save_photo)
   jQuery('#form-photo a.cancel').on(CLICK, clear_photo_form)
 
@@ -106,12 +107,20 @@ function photo_results(photos) {
   }
 }
 
-function take_photo(ev) {
+function photo_from_library(ev) {
+  return take_photo(ev, Camera.PictureSourceType.SAVEDPHOTOALBUM)
+}
+
+function take_photo(ev, sourceType) {
   ev.preventDefault()
+
+  if (typeof sourceType != 'number')
+    sourceType = Camera.PictureSourceType.CAMERA
 
   var opts = { quality : 50,
                destinationType : Camera.DestinationType.DATA_URL,
-               sourceType : Camera.PictureSourceType.CAMERA,
+               sourceType: sourceType,
+               mediaType: Camera.MediaType.PICTURE,
                allowEdit : true,
                encodingType: Camera.EncodingType.JPEG,
                targetWidth: 300,
