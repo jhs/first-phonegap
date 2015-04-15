@@ -25,43 +25,6 @@ function onDeviceReady() {
   jQuery('#photo-button').on(CLICK, take_photo)
 }
 
-function fix_browser_photo() {
-  if (device.platform != 'browser')
-    return console.log('jQuery Mobile photo fix: Not a browser')
-
-  var getUserMedia = null
-  function wrapped(opts, on_ok, on_er) {
-    if (getUserMedia)
-      return getUserMedia.call(navigator, opts, wrapped_on_ok, on_er)
-
-    function wrapped_on_ok(stream) {
-      on_ok(stream)
-
-      console.log('Move browser video capture')
-      var video = $('video')
-      video.detach()
-      video.appendTo('#main')
-      video[0].play()
-
-      var capture_btn = $('button').filter(function(i,el) { return el.innerHTML == 'Capture!' })
-      capture_btn.detach()
-      capture_btn.appendTo('#main')
-    }
-  }
-
-  wrapped.is_fixed = true
-  if (navigator.mozGetUserMedia && !navigator.mozGetUserMedia.is_fixed) {
-    console.log('jQuery Mobile photo fix: Mozilla')
-    getUserMedia = navigator.mozGetUserMedia
-    navigator.mozGetUserMedia = wrapped
-  } else if (navigator.getUserMedia && !navigator.getUserMedia.is_fixed) {
-    console.log('jQuery Mobile photo fix: Chrome')
-    getUserMedia = navigator.getUserMedia
-    navigator.getUserMedia = wrapped
-  } else
-    console.log('jQuery Mobile photo fix: Unknown')
-}
-
 function take_photo() {
   var opts = { quality : 50,
                destinationType : Camera.DestinationType.DATA_URL,
@@ -124,4 +87,45 @@ function getCurrentPosition(callback) {
     console.log('Timestamp: '         + pos.timestamp              )
     callback(null, pos)
   }
+}
+
+//
+// Miscellaneous
+//
+
+function fix_browser_photo() {
+  if (device.platform != 'browser')
+    return console.log('jQuery Mobile photo fix: Not a browser')
+
+  var getUserMedia = null
+  function wrapped(opts, on_ok, on_er) {
+    if (getUserMedia)
+      return getUserMedia.call(navigator, opts, wrapped_on_ok, on_er)
+
+    function wrapped_on_ok(stream) {
+      on_ok(stream)
+
+      console.log('Move browser video capture')
+      var video = $('video')
+      video.detach()
+      video.appendTo('#main')
+      video[0].play()
+
+      var capture_btn = $('button').filter(function(i,el) { return el.innerHTML == 'Capture!' })
+      capture_btn.detach()
+      capture_btn.appendTo('#main')
+    }
+  }
+
+  wrapped.is_fixed = true
+  if (navigator.mozGetUserMedia && !navigator.mozGetUserMedia.is_fixed) {
+    console.log('jQuery Mobile photo fix: Mozilla')
+    getUserMedia = navigator.mozGetUserMedia
+    navigator.mozGetUserMedia = wrapped
+  } else if (navigator.getUserMedia && !navigator.getUserMedia.is_fixed) {
+    console.log('jQuery Mobile photo fix: Chrome')
+    getUserMedia = navigator.getUserMedia
+    navigator.getUserMedia = wrapped
+  } else
+    console.log('jQuery Mobile photo fix: Unknown')
 }
