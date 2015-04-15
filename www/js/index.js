@@ -239,8 +239,20 @@ function go_to(target) {
   window.location.hash = target
 }
 
+function pg_platform() {
+  // Return the platform, but distinguish between the PhoneGap Developer app and a real iOS app.
+  if (device.platform != 'iOS')
+    return device.platform
+
+  // PhoneGap Developer does not (currently?) set .manufacturer = "Apple".
+  if (device.manufacturer == 'Apple')
+    return 'iOS' // A real iOS app
+
+  return 'PG'
+}
+
 function fix_browser_photo() {
-  if (device.platform != 'browser')
+  if (pg_platform() != 'browser')
     return console.log('jQuery Mobile photo fix: Not a browser')
 
   var getUserMedia = null
