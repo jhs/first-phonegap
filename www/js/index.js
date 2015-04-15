@@ -167,7 +167,11 @@ function onOffline() {
   jQuery('#network-status').html('Offline')
 }
 
+var position_cache = null
 function getCurrentPosition(callback) {
+  if (position_cache)
+    return callback(null, position_cache)
+
   return navigator.geolocation.getCurrentPosition(on_ok, on_er)
 
   function on_er(er) { callback(er) }
@@ -180,6 +184,8 @@ function getCurrentPosition(callback) {
     console.log('Heading: '           + pos.coords.heading         )
     console.log('Speed: '             + pos.coords.speed           )
     console.log('Timestamp: '         + pos.timestamp              )
+
+    position_cache = pos
     callback(null, pos)
   }
 }
