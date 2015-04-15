@@ -7,6 +7,10 @@
   /* padding-top: 8px; */
 }
 
+form#form-photo label {
+  margin-top: 1em;
+}
+
 img.new-photo {
   display: block;
   margin-left: auto;
