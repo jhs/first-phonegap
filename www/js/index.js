@@ -2,11 +2,18 @@ var IS_TOUCH = ('ontouchstart' in window)
 var CLICK = IS_TOUCH ? 'touchend' : 'click'
 
 document.addEventListener('deviceready', onDeviceReady)
-document.addEventListener('online', onOnline)
-document.addEventListener('offline', onOffline)
 
 function onDeviceReady() {
   console.log('Device ready: ' + JSON.stringify(device))
+
+  // Listen to network events and manually kick-off the first one.
+  document.addEventListener('online', onOnline)
+  document.addEventListener('offline', onOffline)
+  DB.onState = on_db_state
+  if (navigator.connection.type == 'none')
+    onOffline()
+  else
+    onOnline()
 
   if (typeof jQuery != 'function')
     return console.log('Error: jQuery not found')
@@ -180,14 +187,24 @@ function clear_photo_form(ev) {
   jQuery('#form-photo select').val('false').slider('refresh')
 }
 
-function onOnline(x) {
+function onOnline() {
   jQuery('#network-status').html('Online')
   DB.online()
 }
 
 function onOffline() {
   jQuery('#network-status').html('Offline')
-  db.offline()
+  DB.offline()
+}
+
+function on_db_state(state) {
+  var element = jQuery('#network-status')
+  var label = element.html()
+  label = label.replace(/\|.*$/, '')
+  if (state)
+    label += ' | DB ' + state
+
+  element.html(label)
 }
 
 var position_cache = null

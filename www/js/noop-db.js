@@ -3,6 +3,10 @@ var DB = new NoopDB
 function NoopDB () {
 }
 
+NoopDB.prototype.onState = function(state) {
+  //console.log('Noop DB state: ' + state)
+}
+
 NoopDB.prototype.search = function(options, callback) {
   console.log('Noop search: ' + JSON.stringify(options))
 
@@ -29,9 +33,14 @@ NoopDB.prototype.store = function(photo, callback) {
 }
 
 NoopDB.prototype.online = function() {
+  var self = this
+
   console.log('Noop DB: online')
+  self.onState('Syncing...')
+  setTimeout(function() { self.onState('Up to date') }, 3000)
 }
 
 NoopDB.prototype.offline = function() {
   console.log('Noop DB: offline')
+  this.onState('')
 }
