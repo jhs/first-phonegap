@@ -90,7 +90,6 @@ function take_photo() {
     var prefix = (device.platform == 'browser') ? 'data:image/png;base64,' : 'data:image/jpeg;base64,'
     jQuery('.new-photo').attr('src', prefix+photo)
 
-    debugger
     getCurrentPosition(function(er, pos) {
       if (er)
         return console.log('No position information: ' + er.code+': ' + er.message)
