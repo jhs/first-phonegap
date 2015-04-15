@@ -13,12 +13,14 @@ function onDeviceReady() {
   if (! jQuery.mobile)
     return console.log('Error: jQuery.mobile not found')
 
-  window.location.hash = ''
+  go_to('')
   StatusBar.styleDefault()
   StatusBar.overlaysWebView(false);
   navigator.splashscreen.hide()
 
   fix_browser_photo()
+  jQuery('#form-photo').submit(save_photo)
+  jQuery('#form-photo a.cancel').on(CLICK, clear_photo_form)
 
   console.log('Start')
 
@@ -48,7 +50,7 @@ function take_photo() {
       return console.log('Error: no photo returned')
 
     console.log('Got photo; length: ' + photo.length)
-    window.location.hash = '#prep-photo'
+    go_to('#prep-photo')
 
     var prefix = (device.platform == 'browser') ? 'data:image/png;base64,' : 'data:image/jpeg;base64,'
     jQuery('.new-photo').attr('src', prefix+photo)
@@ -59,9 +61,33 @@ function take_photo() {
 
       $('input[name="form-photo-latitude"]').val(pos.coords.latitude)
       $('input[name="form-photo-longitude"]').val(pos.coords.longitude)
-      $('input[name="form-photo-timestamp"]').val(pos.timestamp)
+      $('input[name="form-photo-timestamp"]').val(pos.timestamp.toJSON())
     })
   }
+}
+
+function save_photo(ev) {
+  console.log('Save photo')
+  ev.preventDefault()
+
+  var body = jQuery('img.new-photo').attr('src')
+  var meta = {}
+  meta.latitude    = jQuery('input[name="form-photo-latitude"]').val()
+  meta.longitude   = jQuery('input[name="form-photo-longitude"]').val()
+  meta.timestamp   = jQuery('input[name="form-photo-timestamp"]').val()
+  meta.description = jQuery('input[name="form-photo-description"]').val()
+  meta.tags        = jQuery('input[name="form-photo-tags"]').val()
+  meta.is_private  = jQuery('select[name="form-photo-private"]').val()
+
+  console.log('Photo '+body.length+' bytes: ' + JSON.stringify(meta))
+
+  go_to('')
+  clear_photo_form()
+}
+
+function clear_photo_form(ev) {
+  jQuery('#form-photo input').val('')
+  jQuery('#form-photo select').val('false').slider('refresh')
 }
 
 function onOnline(x) {
@@ -92,6 +118,11 @@ function getCurrentPosition(callback) {
 //
 // Miscellaneous
 //
+
+function go_to(target) {
+  // I am not sure if this is the correct way to do things with jQuery Mobile.
+  window.location.hash = target
+}
 
 function fix_browser_photo() {
   if (device.platform != 'browser')
