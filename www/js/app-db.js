@@ -2,6 +2,14 @@ var DB = new PouchBacked
 
 function PouchBacked () {
   this.db = new PouchDB('photos')
+
+  var index = {fields:['latitude', 'longitude', 'tags']}
+  this.db.createIndex({index:index}, function(er, res) {
+    if (er)
+      console.log('Pouch index failed: ' + er || er.message)
+    else
+      console.log('Pouch index: ' + res.result)
+  })
 }
 
 PouchBacked.prototype.onState = function(state) {
@@ -9,21 +17,29 @@ PouchBacked.prototype.onState = function(state) {
 }
 
 PouchBacked.prototype.search = function(options, callback) {
-  console.log('Noop search: ' + JSON.stringify(options))
+  console.log('Photo search: ' + JSON.stringify(options))
 
-  var result =
-    [ { latitude:16.2, longitude:101, timestamp:"2015-04-15T03:43:37.780Z"
-      , description: "Me in the jungle", "tags":['me', 'holiday'], is_private: true
-      }
-    , { latitude:13, longitude:101, timestamp:"2015-03-15T03:43:37.780Z"
-      , description: "Me at work", "tags":['me', 'work', 'office'], is_private: false
-      }
-    , { latitude:13, longitude:101, timestamp:"2015-03-15T03:43:37.780Z"
-      , description: "My chair", "tags":['me', 'work', 'chair'], is_private: false
-      }
-    ]
+  // A "near" query is within 1 degree of latitude and longitude either way.
+  if (options.near)
+    var query = {$and: [ {latitude : {$gt: options.near.latitude - 1}}
+                       , {latitude : {$lt: options.near.latitude + 1}}
+                       , {longitude: {$lt: options.near.longitude + 1}}
+                       , {longitude: {$lt: options.near.longitude + 1}}
+                       ]}
 
-  setTimeout(callback, 1, null, result)
+  return this.db.find({selector:query}, function(er, res) {
+    if (er) {
+      console.log('Pouch error: '+er.name+': ' + er.message)
+      return callback(er)
+    }
+
+    // Convert the tags back to arrays.
+    for (var i = 0; i < res.docs.length; i++)
+      res.docs[i].tags = Object.keys(res.docs[i].tags)
+
+    console.log(JSON.stringify(res.docs))
+    callback(null, res.docs)
+  })
 }
 
 PouchBacked.prototype.store = function(photo, callback) {
