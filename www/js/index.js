@@ -171,9 +171,13 @@ function take_photo(ev, sourceType) {
       if (er)
         return console.log('No position information: ' + er.code+': ' + er.message)
 
+      var ts = pos.timestamp
+      if (typeof ts == 'number')
+        ts = new Date(ts)
+
       $('input[name="form-photo-latitude"]').val(pos.coords.latitude)
       $('input[name="form-photo-longitude"]').val(pos.coords.longitude)
-      $('input[name="form-photo-timestamp"]').val(JSON.stringify(pos.timestamp))
+      $('input[name="form-photo-timestamp"]').val(ts.toJSON())
     })
   }
 }
