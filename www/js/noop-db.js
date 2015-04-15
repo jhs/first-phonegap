@@ -11,7 +11,10 @@ NoopDB.prototype.search = function(options, callback) {
       , description: "Me in the jungle", "tags":['me', 'holiday'], is_private: true
       }
     , { latitude:13, longitude:101, timestamp:"2015-03-15T03:43:37.780Z"
-      , description: "Me at work", "tags":['me', 'work'], is_private: false
+      , description: "Me at work", "tags":['me', 'work', 'office'], is_private: false
+      }
+    , { latitude:13, longitude:101, timestamp:"2015-03-15T03:43:37.780Z"
+      , description: "My chair", "tags":['me', 'work', 'chair'], is_private: false
       }
     ]
 
