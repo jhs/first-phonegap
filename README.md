@@ -15,14 +15,10 @@ When you describe, tag, and save a photo, by default Photo Share does nothing. H
 
 ![Splash Screen](res/img/IMG_4466.jpg)
 
-## Before
+## Photos so far
 
 ![Before](res/img/IMG_4467.jpg)
 
 ## Add a new photo
 
 ![Before](res/img/IMG_4470.jpg)
-
-## After
-
-![Before](res/img/IMG_4469.jpg)
