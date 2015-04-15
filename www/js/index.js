@@ -125,17 +125,26 @@ function take_photo(ev, sourceType) {
     sourceType = Camera.PictureSourceType.CAMERA
 
   var opts = { quality : 50,
-               destinationType : Camera.DestinationType.DATA_URL,
                sourceType: sourceType,
                mediaType: Camera.MediaType.PICTURE,
-               allowEdit : true,
+               //allowEdit : true,
                encodingType: Camera.EncodingType.JPEG,
-               targetWidth: 300,
-               targetHeight: 300,
                cameraDirection: Camera.Direction.FRONT,
                //popoverOptions: CameraPopoverOptions,
                saveToPhotoAlbum: false
              }
+
+  // This is rough. PhoneGap Developer cannot load file:/// URLs, and the iOS app cannot support data URLs.
+  var destType = 'DATA_URL'
+  var os = pg_platform()
+  if (os == 'PG') {
+    opts.targetWidth = 500
+    opts.targetHeight = 500
+  } else if (os == 'iOS')
+    destType = 'FILE_URI'
+
+  console.log('Photo destination type for '+os+': ' + destType)
+  opts.destinationType = Camera.DestinationType[destType]
 
   console.log('Take photo: ' + JSON.stringify(opts))
   navigator.camera.getPicture(function(ok) { done(null, ok) }, function(er) { done(er) }, opts);
@@ -147,10 +156,16 @@ function take_photo(ev, sourceType) {
       return console.log('Error: no photo returned')
 
     console.log('Got photo; length: ' + photo.length)
-    go_to('#prep-photo')
+    if (photo.length < 300)
+      console.log('Photo data: ' + photo)
 
-    var prefix = (device.platform == 'browser') ? 'data:image/png;base64,' : 'data:image/jpeg;base64,'
-    jQuery('.new-photo').attr('src', prefix+photo)
+    go_to('#prep-photo')
+    if (photo.match(/^file:\/\/\//)) {
+      jQuery('.new-photo').attr('src', photo)
+    } else if (pg_platform() == 'browser')
+      jQuery('.new-photo').attr('src', 'data:image/png;base64,' + photo)
+    else
+      jQuery('.new-photo').attr('src', 'data:image/jpeg;base64,' + photo)
 
     getCurrentPosition(function(er, pos) {
       if (er)
@@ -158,7 +173,7 @@ function take_photo(ev, sourceType) {
 
       $('input[name="form-photo-latitude"]').val(pos.coords.latitude)
       $('input[name="form-photo-longitude"]').val(pos.coords.longitude)
-      $('input[name="form-photo-timestamp"]').val(pos.timestamp.toJSON())
+      $('input[name="form-photo-timestamp"]').val(JSON.stringify(pos.timestamp))
     })
   }
 }
