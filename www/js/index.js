@@ -27,6 +27,16 @@ function onDeviceReady() {
   jQuery('#photo-button').on(CLICK, take_photo)
   jQuery('#form-photo').submit(save_photo)
   jQuery('#form-photo a.cancel').on(CLICK, clear_photo_form)
+
+  //jQuery('#photo-search').change(on_search_input)
+  jQuery('#form-search').submit(on_search_input)
+}
+
+function on_search_input(ev) {
+  ev.preventDefault()
+
+  jQuery('input#photo-search').blur()
+  search_photos()
 }
 
 function search_photos() {
@@ -96,7 +106,9 @@ function photo_results(photos) {
   }
 }
 
-function take_photo() {
+function take_photo(ev) {
+  ev.preventDefault()
+
   var opts = { quality : 50,
                destinationType : Camera.DestinationType.DATA_URL,
                sourceType : Camera.PictureSourceType.CAMERA,
