@@ -19,12 +19,38 @@ function onDeviceReady() {
   navigator.splashscreen.hide()
 
   fix_browser_photo()
-  jQuery('#form-photo').submit(save_photo)
-  jQuery('#form-photo a.cancel').on(CLICK, clear_photo_form)
-
   console.log('Start')
 
+  search_photos()
+
+  // Interactivity
   jQuery('#photo-button').on(CLICK, take_photo)
+  jQuery('#form-photo').submit(save_photo)
+  jQuery('#form-photo a.cancel').on(CLICK, clear_photo_form)
+}
+
+function search_photos() {
+  getCurrentPosition(function(er, pos) {
+    var query = {}
+
+    if (er)
+      console.log('No position information: ' + er.code+': ' + er.message)
+    else if (pos && pos.coords)
+      query.near = {latitude:pos.coords.latitude, longitude:pos.coords.longitude}
+
+    query.term = jQuery('input#photo-search').val()
+
+    DB.search(query, function(er, photos) {
+      if (er)
+        console.log('Error searching photos: ' + er.message)
+      else
+        photo_results(photos)
+    })
+  })
+}
+
+function photo_results(photos) {
+  console.log('Photo results: ' + photos.length)
 }
 
 function take_photo() {
