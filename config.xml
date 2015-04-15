@@ -4,7 +4,7 @@
     <description>
       My Apache Cordova hello world program
     </description>
-    <icon src="www/img/jason.png" />
+    <icon src="res/icon/meuy.png" />
     <author email="jason.h.smith@gmail.com" href="http://cordova.io">
         Jason Smith
     </author>
