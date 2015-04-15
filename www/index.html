@@ -27,28 +27,32 @@
         <div id="prep-photo" data-role="page">
           <img class="new-photo"></img>
 
-          <input type="hidden" name="form-photo-latitude" value=""/>
-          <input type="hidden" name="form-photo-longitude" value=""/>
-          <input type="hidden" name="form-photo-timestamp" value=""/>
+          <form id="form-photo">
+            <input type="hidden" name="form-photo-latitude" value=""/>
+            <input type="hidden" name="form-photo-longitude" value=""/>
+            <input type="hidden" name="form-photo-timestamp" value=""/>
 
-          <label for="form-photo-description">Description:</label>
-          <input name="form-photo-description" id="form-photo-description" value="" type="text" />
+            <label for="form-photo-description">Description:</label>
+            <input name="form-photo-description" id="form-photo-description" value="" type="text" />
 
-          <label for="form-photo-tags">Tags:</label>
-          <input name="form-photo-tags" id="form-photo-tags" value="" type="text" />
+            <label for="form-photo-tags">Tags:</label>
+            <input name="form-photo-tags" id="form-photo-tags" value="" type="text" />
 
-          <label for="form-photo-private">Private:</label>
-          <select class="ui-block-c" name="form-photo-private" id="form-photo-private" data-role="slider">
-              <option value="false" selected="">No</option>
-              <option value="true">Yes</option>
-          </select>
+            <label for="form-photo-private">Private:</label>
+            <select class="ui-block-c" name="form-photo-private" id="form-photo-private" data-role="slider">
+                <option value="false" selected="">No</option>
+                <option value="true">Yes</option>
+            </select>
 
-          <fieldset class="ui-grid-a">
-            <div class="ui-block-a">
-              <a href="#main" data-direction="reverse" class="ui-btn ui-btn-b ui-corner-all ui-icon-back ui-btn-icon-left">Cancel</a>
-            </div>
-            <div class="ui-block-b"><input value="Save" data-theme="a" type="submit"></div>
-          </fieldset>
+            <fieldset class="ui-grid-a">
+              <div class="ui-block-a">
+                <a href="#main" data-direction="reverse" class="ui-btn ui-btn-b ui-corner-all ui-icon-back ui-btn-icon-left">
+                  Cancel
+                </a>
+              </div>
+              <div class="ui-block-b"><input value="Save" data-theme="a" type="submit"></div>
+            </fieldset>
+          </form>
         </div>
       </div> <!-- app -->
 
