@@ -44,7 +44,8 @@ PouchBacked.prototype.store = function(photo, callback) {
   doc.tags = {}
   photo.meta.tags.split(/\s+/).forEach(function(tag) {
     tag = tag.trim().toLowerCase()
-    doc.tags[tag] = 1
+    if (tag)
+      doc.tags[tag] = 1
   })
 
   doc._attachments = {photo:{content_type:null, data:null}}
