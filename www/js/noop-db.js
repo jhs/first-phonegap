@@ -15,12 +15,12 @@ NoopDB.prototype.search = function(options, callback) {
       }
     ]
 
-  setTimeout(callback, 100, null, result)
+  setTimeout(callback, 1, null, result)
 }
 
 NoopDB.prototype.store = function(photo, callback) {
   var kb = Math.round(photo.body.length / 1024)
   console.log('Store photo ('+kb+' kb): ' + JSON.stringify(photo.meta))
 
-  setTimeout(callback, 50)
+  setTimeout(callback, 10)
 }
