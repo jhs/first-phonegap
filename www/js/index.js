@@ -199,7 +199,12 @@ function save_photo(ev) {
 
   go_to('')
   clear_photo_form()
-  DB.store({body:body, meta:meta})
+  DB.store({body:body, meta:meta}, function(er, res) {
+    if (er)
+      console.log('Photo store error: ' + er.message)
+    else
+      search_photos() // Re-populate the search results.
+  })
 }
 
 function clear_photo_form(ev) {
