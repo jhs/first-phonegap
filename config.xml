@@ -8,13 +8,11 @@
     <author email="jason.h.smith@gmail.com" href="http://cordova.io">
         Jason Smith
     </author>
-
     <preference name="CameraUsesGeolocation" value="true" />
     <preference name="SplashScreen" value="res/screen/splash_screen.9.png" />
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarBackgroundColor" value="#000000" />
-
     <platform name="browser">
         <splash src="res/screen/splash_screen.9.png" />
     </platform>
@@ -39,14 +37,15 @@
     <feature name="Device">
         <param name="id" value="org.apache.cordova.device" />
     </feature>
-    <feature name="Camera">
-        <param name="id" value="org.apache.cordova.camera" />
-    </feature>
     <feature name="Splashscreen">
         <param name="id" value="org.apache.cordova.splashscreen" />
     </feature>
     <feature name="StatusBar">
         <param name="id" value="org.apache.cordova.statusbar" />
-        <param name="ios-package" value="CDVStatusBar" onload="true" />
+        <param name="ios-package" onload="true" value="CDVStatusBar" />
+    </feature>
+    <feature name="Camera">
+        <param name="id" value="cordova-plugin-camera" />
+        <param name="url" value="https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git" />
     </feature>
 </widget>
