@@ -173,10 +173,12 @@ function clear_photo_form(ev) {
 
 function onOnline(x) {
   jQuery('#network-status').html('Online')
+  DB.online()
 }
 
 function onOffline() {
   jQuery('#network-status').html('Offline')
+  db.offline()
 }
 
 var position_cache = null

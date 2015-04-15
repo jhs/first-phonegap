@@ -27,3 +27,11 @@ NoopDB.prototype.store = function(photo, callback) {
 
   setTimeout(callback, 10)
 }
+
+NoopDB.prototype.online = function() {
+  console.log('Noop DB: online')
+}
+
+NoopDB.prototype.offline = function() {
+  console.log('Noop DB: offline')
+}
