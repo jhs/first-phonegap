@@ -7,6 +7,15 @@
   /* padding-top: 20px; */
 }
 
+.ui-field-contain > label {
+  width: 50%;
+  float: left;
+}
+
+.ui-field-contain > .ui-flipswitch {
+  float: right;
+}
+
 [data-role="page"] > [data-role="header"] {
   /* padding-top: 8px; */
 }
@@ -29,6 +38,7 @@ img.new-photo {
 }
 
 #search-result {
+  clear: both;
   margin-top: 1em;
   margin-bottom: 2em;
 }
@@ -40,3 +50,8 @@ img.new-photo {
 
 .ui-grid-a.left-third .ui-block-a { width: 35%; }
 .ui-grid-a.left-third .ui-block-b { width: 65%; }
+
+.tag-heading {
+  margin-left: 3em;
+  margin-bottom: 0;
+}

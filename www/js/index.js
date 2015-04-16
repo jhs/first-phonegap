@@ -73,7 +73,7 @@ function photo_results(photos) {
   var result = jQuery('#search-result')
   result.empty()
 
-  row('Total photos', photos.length)
+  row('<strong>Total photos</strong>', photos.length)
 
   // Count the private photos and the tags.
   var private_count = 0
@@ -88,14 +88,14 @@ function photo_results(photos) {
     })
   }
 
-  row('Private photos', private_count)
+  row('<strong>Private photos</strong>', private_count)
 
   // Display the top 3 tags.
   tags = Object.keys(tags).map(function(name) { return {name:name, count:tags[name]} })
   tags.sort(cmp_tag_tuple)
   if (tags.length > 0) {
     row('&nbsp;', '&nbsp;')
-    result.append('<div class="ui-block-a"><h3>Tags</h3></div>')
+    result.append('<div class="ui-block-a"><h3 class="tag-heading">Tags</h3></div>')
 
     tags.forEach(function(tag, i) {
       if (i < 3)
@@ -104,7 +104,7 @@ function photo_results(photos) {
   }
 
   function row(key, val) {
-    result.append('<div class="ui-block-a"><strong>' + key + '</strong></div>')
+    result.append('<div class="ui-block-a">' + key + '</div>')
     result.append('<div class="ui-block-b">' + val + '</div>')
   }
 
