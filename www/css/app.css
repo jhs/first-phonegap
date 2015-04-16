@@ -1,3 +1,7 @@
+.ui-content {
+  padding-top: 0;
+}
+
 .ui-mobile [data-role="page"] {
   /* The entire application page */
   /* padding-top: 20px; */
