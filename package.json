@@ -1,0 +1,24 @@
+{
+  "name": "photo-share",
+  "version": "1.0.0",
+  "description": "Photo share app",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jhs/first-phonegap.git"
+  },
+  "keywords": [
+    "cordova",
+    "cloudant",
+    "pouchdb"
+  ],
+  "author": "Jason Smith <jason.h.smith@gmail.com>",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/jhs/first-phonegap/issues"
+  },
+  "homepage": "https://github.com/jhs/first-phonegap"
+}
