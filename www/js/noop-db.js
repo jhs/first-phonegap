@@ -1,4 +1,4 @@
-var DB = new NoopDB
+var DBClass = NoopDB
 
 function NoopDB () {
 }

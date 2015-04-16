@@ -1,10 +1,12 @@
 var IS_TOUCH = ('ontouchstart' in window)
 var CLICK = IS_TOUCH ? 'touchend' : 'click'
+var DB = null
 
 document.addEventListener('deviceready', onDeviceReady)
 
 function onDeviceReady() {
   console.log('Device ready: ' + JSON.stringify(device))
+  DB = new DBClass
 
   // Listen to network events and manually kick-off the first one.
   document.addEventListener('online', onOnline)

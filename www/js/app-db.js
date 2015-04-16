@@ -1,4 +1,4 @@
-var DB = new PouchBacked
+var DBClass = PouchBacked
 
 function PouchBacked () {
   var self = this
