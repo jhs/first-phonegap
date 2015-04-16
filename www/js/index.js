@@ -246,7 +246,7 @@ function on_db_state(state) {
   var label = element.html()
   label = label.replace(/\|.*$/, '')
   if (state)
-    label += ' | DB ' + state
+    label += ' | ' + state
 
   element.html(label)
 }
