@@ -2,7 +2,10 @@ var DBClass = PouchBacked
 
 function PouchBacked () {
   var self = this
+
   self.db = new PouchDB('photos')
+  self.replication = {'db': 'https://jhs.cloudant.com/photos', 'in':null, 'out':null }
+  //self.replication = {'db': 'https://jhs.cloudant.com/photos', job:null}
 
   self.indexer = new Promise(build_index)
   self.indexer.then(function() {
@@ -35,7 +38,7 @@ function PouchBacked () {
 }
 
 PouchBacked.prototype.onState = function(state) {
-  //console.log('Noop DB state: ' + state)
+  // This function will be replaced by the user.
 }
 
 PouchBacked.prototype.search = function(options, callback) {
@@ -146,13 +149,58 @@ PouchBacked.prototype.store = function(photo, callback) {
 PouchBacked.prototype.online = function() {
   var self = this
 
-  console.log('Noop DB: online')
-  self.onState('Syncing...')
-  setTimeout(function() { self.onState('Up to date') }, 3000)
+  console.log('PouchDB: online')
+  self.db.info(function(er, info) {
+    console.log('DB info: ' + JSON.stringify([er, info]))
+    if (er)
+      return console.log('ERROR: Info lookup: ' + er.message)
+    self.replicate(info.db_name)
+  })
+}
+
+PouchBacked.prototype.replicate = function(db_name) {
+  var self = this
+
+  var db_url = self.replication.db
+  var opts = {live:true, retry:true}
+
+  if (!self.replication.in) {
+    self.replication.in = self.db.sync(self.replication.db, opts)
+    self.replication.in.on('paused', on_pause('any'))
+    self.replication.in.on('active', on_active('any'))
+    self.replication.in.on('error' , on_error('any'))
+  }
+
+  function on_pause(dir) {
+    return function(er) {
+      console.log('Replication pause: ' + dir)
+
+      if (er)
+        console.log('Pause error (perhaps going offline): ' + er.message)
+      else {
+        console.log('Caught up: ' + dir)
+        self.onState('Up to date')
+      }
+    }
+  }
+
+  function on_active(dir) {
+    return function() {
+      console.log('Replication active: ' + dir)
+      self.onState('Syncing...')
+    }
+  }
+
+  function on_error(dir) {
+    return function(er) {
+      console.log('ERROR Stop replication '+dir+': ' + er.message)
+      self.replication[dir].cancel()
+    }
+  }
 }
 
 PouchBacked.prototype.offline = function() {
-  console.log('Noop DB: offline')
+  console.log('PouchDB: offline')
   this.onState('')
 }
 
