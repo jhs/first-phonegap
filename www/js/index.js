@@ -184,9 +184,17 @@ function take_photo(ev, sourceType) {
       if (typeof ts == 'number')
         ts = new Date(ts)
 
-      $('input[name="form-photo-latitude"]').val(pos.coords.latitude)
-      $('input[name="form-photo-longitude"]').val(pos.coords.longitude)
+      // Always set the timestamp but for library photos, do not use the current position.
       $('input[name="form-photo-timestamp"]').val(ts.toJSON())
+
+      if (sourceType == Camera.PictureSourceType.SAVEDPHOTOALBUM) {
+        console.log('No location information for image from photo album')
+        $('input[name="form-photo-latitude"]').val('')
+        $('input[name="form-photo-longitude"]').val('')
+      } else {
+        $('input[name="form-photo-latitude"]').val(pos.coords.latitude)
+        $('input[name="form-photo-longitude"]').val(pos.coords.longitude)
+      }
     })
   }
 }
