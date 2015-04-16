@@ -20,6 +20,13 @@ function onDeviceReady() {
   if (! jQuery.mobile)
     return console.log('Error: jQuery.mobile not found')
 
+  // For development
+  if (0)
+    return DB.destroy(function(er) {
+      if (er) throw er
+      $('body').html('Cleaned')
+    })
+
   go_to('')
   StatusBar.overlaysWebView(false);
   //StatusBar.styleDefault()
@@ -36,11 +43,12 @@ function onDeviceReady() {
   jQuery('#form-photo').submit(save_photo)
   jQuery('#form-photo a.cancel').on(CLICK, clear_photo_form)
 
-  //jQuery('#photo-search').change(on_search_input)
   jQuery('#form-search').submit(on_search_input)
+  jQuery('#photo-search-near').change(on_search_input)
 }
 
 function on_search_input(ev) {
+  console.log('Re-run photo search')
   ev.preventDefault()
 
   jQuery('input#photo-search').blur()
@@ -50,10 +58,11 @@ function on_search_input(ev) {
 function search_photos() {
   getCurrentPosition(function(er, pos) {
     var query = {}
+    var is_nearby_search = (jQuery('select[name="photo-search-near"]').val() == 'true')
 
     if (er)
       console.log('No position information: ' + er.code+': ' + er.message)
-    else if (pos && pos.coords)
+    else if (is_nearby_search && pos && pos.coords)
       query.near = {latitude:pos.coords.latitude, longitude:pos.coords.longitude}
 
     query.term = jQuery('input#photo-search').val()
@@ -73,7 +82,7 @@ function photo_results(photos) {
   var result = jQuery('#search-result')
   result.empty()
 
-  row('<strong>Total photos</strong>', photos.length)
+  row('<strong>Photos</strong>', photos.length)
 
   // Count the private photos and the tags.
   var private_count = 0
