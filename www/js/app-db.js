@@ -166,36 +166,28 @@ PouchBacked.prototype.replicate = function(db_name) {
 
   if (!self.replication.in) {
     self.replication.in = self.db.sync(self.replication.db, opts)
-    self.replication.in.on('paused', on_pause('any'))
-    self.replication.in.on('active', on_active('any'))
-    self.replication.in.on('error' , on_error('any'))
+    self.replication.in.on('paused', on_pause)
+    self.replication.in.on('active', on_active)
+    self.replication.in.on('error' , on_error)
   }
 
-  function on_pause(dir) {
-    return function(er) {
-      console.log('Replication pause: ' + dir)
-
-      if (er)
-        console.log('Pause error (perhaps going offline): ' + er.message)
-      else {
-        console.log('Caught up: ' + dir)
-        self.onState('Up to date')
-      }
+  function on_pause(er) {
+    if (er)
+      console.log('Replication pause with error (perhaps going offline): ' + er.message)
+    else {
+      console.log('Replication caught up')
+      self.onState('Up to date')
     }
   }
 
-  function on_active(dir) {
-    return function() {
-      console.log('Replication active: ' + dir)
-      self.onState('Syncing...')
-    }
+  function on_active() {
+    console.log('Replication active')
+    self.onState('Syncing...')
   }
 
-  function on_error(dir) {
-    return function(er) {
-      console.log('ERROR Stop replication '+dir+': ' + er.message)
-      self.replication[dir].cancel()
-    }
+  function on_error(er) {
+    console.log('ERROR Stop replication: ' + er.message)
+    self.replication.job.cancel()
   }
 }
 
