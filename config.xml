@@ -48,4 +48,7 @@
         <param name="id" value="cordova-plugin-camera" />
         <param name="url" value="https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git" />
     </feature>
+    <feature name="File">
+        <param name="id" value="org.apache.cordova.file" />
+    </feature>
 </widget>
