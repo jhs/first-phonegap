@@ -1,12 +1,29 @@
 var IS_TOUCH = ('ontouchstart' in window)
 var CLICK = IS_TOUCH ? 'touchend' : 'click'
 var DB = null
+var FS = null
 
 document.addEventListener('deviceready', onDeviceReady)
 
 function onDeviceReady() {
   console.log('Device ready: ' + JSON.stringify(device))
   DB = new DBClass
+
+  console.log('FS ' + JSON.stringify(cordova.file))
+  //var jpg_url = 'file:///var/mobile/Containers/Data/Application/8B0CB15C-B110-43CD-859A-3C21571FA820/tmp/cdv_photo_003.jpg'
+
+  window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fs_ok, fs_err)
+  function fs_ok(fs) {
+    console.log('Filesystem online')
+    FS = fs
+
+    console.log('Read attempt...')
+    read_file('tmp/cdv_photo_008.jpg', function(er, body) {
+      if (er)
+        return fs_err(er)
+      console.log('YAY READ WORKED')
+    })
+  }
 
   // Listen to network events and manually kick-off the first one.
   document.addEventListener('online', onOnline)
@@ -47,6 +64,30 @@ function onDeviceReady() {
 
   jQuery('#form-search').submit(on_search_input)
   jQuery('#photo-search-near').change(on_search_input)
+}
+
+function fs_err(er) {
+  console.log('ERROR Filesystem: ' + er.code)
+}
+
+function read_file(url, callback) {
+  //url = url.replace(/^file:\/\//, '')
+  //url = url.replace(/^.*\/tmp/, 'tmp')
+  console.log('Read file: ' + url)
+  if (!FS)
+    return callback(new Error('Filesystem not online'))
+
+  try {
+  FS.root.getFile(url, null, on_fs_ent, function(er) { fs_err(er); callback(er) })
+  } catch (er) {
+    return console.log('Error with getFile: ' + er || er.message || er.code)
+  }
+
+  function on_fs_ent(entry) {
+    console.log('XXX Got file entry!')
+    console.log(JSON.stringify(entry))
+    callback(null, '')
+  }
 }
 
 function on_search_input(ev) {
@@ -173,6 +214,11 @@ function take_photo(ev, sourceType) {
     go_to('#prep-photo')
     if (photo.match(/^file:\/\/\//)) {
       jQuery('.new-photo').attr('src', photo)
+      read_file(photo, function(er, body) {
+        if (er)
+          console.log('Error reading photo: ' + er.message || er.code)
+        console.log('YAY Got photo body: ' + body.length)
+      })
     } else if (pg_platform() == 'browser')
       jQuery('.new-photo').attr('src', 'data:image/png;base64,' + photo)
     else
