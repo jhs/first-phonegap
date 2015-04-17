@@ -176,7 +176,7 @@ PouchBacked.prototype.replicate = function(db_name) {
       console.log('Replication pause with error (perhaps going offline): ' + er.message)
     else {
       console.log('Replication caught up')
-      self.onState('Up to date')
+      self.onState('Up to date', true)
     }
   }
 

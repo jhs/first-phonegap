@@ -288,7 +288,7 @@ function onOffline() {
   DB.offline()
 }
 
-function on_db_state(state) {
+function on_db_state(state, is_refresh) {
   var element = jQuery('#network-status')
   var label = element.html()
   label = label.replace(/\|.*$/, '')
@@ -296,6 +296,11 @@ function on_db_state(state) {
     label += ' | ' + state
 
   element.html(label)
+
+  if (is_refresh) {
+    console.log('Refresh photos after DB sync')
+    search_photos()
+  }
 }
 
 var position_cache = null
