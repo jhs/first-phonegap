@@ -9,21 +9,7 @@ function onDeviceReady() {
   console.log('Device ready: ' + JSON.stringify(device))
   DB = new DBClass
 
-  console.log('FS ' + JSON.stringify(cordova.file))
-  //var jpg_url = 'file:///var/mobile/Containers/Data/Application/8B0CB15C-B110-43CD-859A-3C21571FA820/tmp/cdv_photo_003.jpg'
-
-  window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fs_ok, fs_err)
-  function fs_ok(fs) {
-    console.log('Filesystem online')
-    FS = fs
-
-    console.log('Read attempt...')
-    read_file('tmp/cdv_photo_008.jpg', function(er, body) {
-      if (er)
-        return fs_err(er)
-      console.log('YAY READ WORKED')
-    })
-  }
+  init_fs()
 
   // Listen to network events and manually kick-off the first one.
   document.addEventListener('online', onOnline)
@@ -67,27 +53,41 @@ function onDeviceReady() {
   jQuery('#photo-search-near').change(on_search_input)
 }
 
-function fs_err(er) {
-  console.log('ERROR Filesystem: ' + er.code)
+function init_fs() {
+  if (!cordova.file || typeof requestFileSystem != 'function')
+    return console.log('No filesystem support')
+
+  console.log('Initialize filesystem')
+  Object.keys(cordova.file).forEach(function(key) {
+    console.log('  ' + key + ': ' + cordova.file[key])
+  })
+
+  requestFileSystem(LocalFileSystem.PERSISTENT, 0, fs_ok, fs_err('requestFileSystem'))
+
+  function fs_ok(fs) {
+    console.log('Filesystem online')
+    FS = fs
+  }
 }
 
-function read_file(url, callback) {
-  //url = url.replace(/^file:\/\//, '')
-  //url = url.replace(/^.*\/tmp/, 'tmp')
-  console.log('Read file: ' + url)
-  if (!FS)
-    return callback(new Error('Filesystem not online'))
+function fs_err(label, callback) {
+  var codes = []
+  Object.keys(FileError).forEach(function(key) {
+    if (key.match(/_ERR$/))
+      codes.push(key)
+  })
 
-  try {
-  FS.root.getFile(url, null, on_fs_ent, function(er) { fs_err(er); callback(er) })
-  } catch (er) {
-    return console.log('Error with getFile: ' + er || er.message || er.code)
-  }
+  return err_reporter
 
-  function on_fs_ent(entry) {
-    console.log('XXX Got file entry!')
-    console.log(JSON.stringify(entry))
-    callback(null, '')
+  function err_reporter(er) {
+    var msg = (er && er.code) || 'Unknown error'
+    for (var i = 0; i < codes.length; i++)
+      if (er && er.code == FileError[ codes[i] ])
+        msg = codes[i]
+
+    console.log('ERROR Filesystem '+label+': ' + msg)
+    if (callback)
+      callback(er)
   }
 }
 
@@ -211,15 +211,11 @@ function take_photo(ev, sourceType) {
     console.log('Got photo; length: ' + photo.length)
     if (photo.length < 300)
       console.log('Photo data: ' + photo)
-
     go_to('#prep-photo')
+
     if (photo.match(/^file:\/\/\//)) {
+      console.log('Set to the url: ' + photo)
       jQuery('.new-photo').attr('src', photo)
-      read_file(photo, function(er, body) {
-        if (er)
-          console.log('Error reading photo: ' + er.message || er.code)
-        console.log('YAY Got photo body: ' + body.length)
-      })
     } else if (pg_platform() == 'browser')
       jQuery('.new-photo').attr('src', 'data:image/png;base64,' + photo)
     else
@@ -329,6 +325,34 @@ function getCurrentPosition(callback) {
 //
 // Miscellaneous
 //
+
+function fs_read_base64(url, callback) {
+  console.log('Read base64: ' + url)
+
+  if (!FS)
+    return callback(new Error('Filesystem not online or supported'))
+
+  resolveLocalFileSystemURI(url, on_resolve, fs_err('resolveLocalFileSystemURI', callback))
+
+  function on_resolve(entry) {
+    console.log('Found file: ' + url)
+    entry.file(on_file, fs_err('entry.file', callback))
+
+    function on_file(file) {
+      console.log('Opened file: ' + url)
+      var reader = new FileReader
+      reader.onerror = fs_err('FileReader', callback)
+      reader.onloadend = on_done
+      reader.readAsDataURL(file)
+
+      function on_done(ev) {
+        var body = this.result.replace(/^data:.*?;base64,/, '')
+        console.log('Read '+url+' Base64 size: ' + body.length)
+        callback(null, body)
+      }
+    }
+  }
+}
 
 function go_to(target) {
   // I am not sure if this is the correct way to do things with jQuery Mobile.
