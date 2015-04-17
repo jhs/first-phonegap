@@ -4,8 +4,7 @@ function PouchBacked () {
   var self = this
 
   self.db = new PouchDB('photos')
-  self.replication = {'db': 'https://jhs.cloudant.com/photos', 'in':null, 'out':null }
-  //self.replication = {'db': 'https://jhs.cloudant.com/photos', job:null}
+  self.replication = {'db': 'https://jhs.cloudant.com/photos', job:null}
 
   self.indexer = new Promise(build_index)
   self.indexer.then(function() {
@@ -169,11 +168,11 @@ PouchBacked.prototype.replicate = function(db_name) {
   var db_url = self.replication.db
   var opts = {live:true, retry:true}
 
-  if (!self.replication.in) {
-    self.replication.in = self.db.sync(self.replication.db, opts)
-    self.replication.in.on('paused', on_pause)
-    self.replication.in.on('active', on_active)
-    self.replication.in.on('error' , on_error)
+  if (!self.replication.job) {
+    self.replication.job = self.db.sync(self.replication.db, opts)
+    self.replication.job.on('paused', on_pause)
+    self.replication.job.on('active', on_active)
+    self.replication.job.on('error' , on_error)
   }
 
   function on_pause(er) {
