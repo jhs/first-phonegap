@@ -248,7 +248,7 @@ function save_photo(ev) {
   console.log('Save photo')
   ev.preventDefault()
 
-  var body = jQuery('img.new-photo').attr('src')
+  var src = jQuery('img.new-photo').attr('src')
   var meta = {}
   meta.latitude    = jQuery('input[name="form-photo-latitude"]').val()
   meta.longitude   = jQuery('input[name="form-photo-longitude"]').val()
@@ -257,16 +257,31 @@ function save_photo(ev) {
   meta.tags        = jQuery('input[name="form-photo-tags"]').val()
   meta.is_private  = jQuery('select[name="form-photo-private"]').val()
 
-  console.log('Photo '+body.length+' bytes: ' + JSON.stringify(meta))
+  console.log('Photo src '+src.length+' bytes: ' + JSON.stringify(meta))
 
   go_to('')
   clear_photo_form()
-  DB.store({body:body, meta:meta}, function(er, res) {
-    if (er)
-      console.log('Photo store error: ' + er.message)
-    else
-      search_photos() // Re-populate the search results.
-  })
+
+  if (src.match(/^data:/))
+    send_to_db(src)
+  else if(src.match(/^file:\/\//))
+    fs_read_base64(src, function(er, data_url) {
+      if (er)
+        return console.log('ERROR Failed to read photo URL: ' + er.message)
+      else
+        send_to_db(data_url)
+    })
+  else
+    console.log('ERROR: Do not know how to save photo')
+
+  function send_to_db(data_url) {
+    DB.store({body:data_url, meta:meta}, function(er, res) {
+      if (er)
+        console.log('Photo store error: ' + er.message)
+      else
+        search_photos() // Re-populate the search results.
+    })
+  }
 }
 
 function clear_photo_form(ev) {
@@ -346,7 +361,7 @@ function fs_read_base64(url, callback) {
       reader.readAsDataURL(file)
 
       function on_done(ev) {
-        var body = this.result.replace(/^data:.*?;base64,/, '')
+        var body = this.result //.replace(/^data:.*?;base64,/, '')
         console.log('Read '+url+' Base64 size: ' + body.length)
         callback(null, body)
       }
