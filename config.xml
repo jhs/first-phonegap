@@ -12,7 +12,6 @@
     <preference name="SplashScreen" value="res/screen/splash_screen.9.png" />
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="StatusBarOverlaysWebView" value="false" />
-    <preference name="StatusBarBackgroundColor" value="#000000" />
     <preference name="iosPersistentFileLocation" value="Compatibility" />
     <platform name="browser">
         <splash src="res/screen/splash_screen.9.png" />

@@ -46,9 +46,10 @@ function onDeviceReady() {
       $('body').html('Cleaned')
     })
 
+  StatusBar.overlaysWebView(false)
+  StatusBar.styleDefault()
+
   go_to('')
-  StatusBar.overlaysWebView(false);
-  //StatusBar.styleDefault()
   navigator.splashscreen.hide()
 
   fix_browser_photo()
