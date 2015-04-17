@@ -92,6 +92,8 @@ PouchBacked.prototype._search = function(options, callback) {
 }
 
 PouchBacked.prototype.store = function(photo, callback) {
+  var self = this
+
   var kb = (photo.body.length / 1024).toFixed(1)
   console.log('Store photo ('+kb+' kb): ' + JSON.stringify(photo.meta))
 
@@ -135,13 +137,16 @@ PouchBacked.prototype.store = function(photo, callback) {
     return console.log('ERROR: Unknown image to attach')
 
   console.log('Store doc')
-  this.db.post(doc, function(er, res) {
+  self.db.post(doc, function(er, res) {
     if (er) {
       console.log('Pouch error: '+er.name+': ' + er.message)
       return callback(er)
     }
 
-    console.log('Saved photo: ' + JSON.stringify(res))
+    // Log the cloud URL for debugging.
+    var cloud_url = self.replication.db + '/' + res.id + '/photo'
+    console.log('Saved photo ' + res.id + '; cloud URL: ' + cloud_url)
+
     callback(null)
   })
 }
