@@ -88,6 +88,9 @@ function watch_couch(couch, creds, since) {
     else {
       console.log('  Found %s updates', res.body.results.length)
       res.body.results.forEach(function(change) {
+        if (change.deleted)
+          return;
+
         var photo = change.doc
         photo.url = 'http://' + couch + '/photos/' + change.id + '/photo'
 
