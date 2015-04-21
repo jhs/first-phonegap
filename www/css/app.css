@@ -69,3 +69,23 @@ img.new-photo {
   margin-left: 3em;
   margin-bottom: 0;
 }
+
+#thumbnails {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+#thumbnails .photo {
+  display: inline-block;
+  float: none;
+
+  width: 70px;
+  height: 70px;
+  margin: 0.1em;
+}
+
+#thumbnails .photo img {
+  max-width: 70px;
+  max-height: 70px;
+}

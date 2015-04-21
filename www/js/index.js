@@ -120,7 +120,10 @@ function photo_results(photos) {
   console.log('Photo results: ' + photos.length)
 
   var result = jQuery('#search-result')
+  var thumbnails = jQuery('#thumbnails')
+
   result.empty()
+  thumbnails.empty()
 
   row('Photos', photos.length)
 
@@ -129,6 +132,7 @@ function photo_results(photos) {
   var tags = {}
 
   for (var i = 0; i < photos.length; i++) {
+    thumbnail(photos[i])
     if (photos[i].is_private)
       private_count += 1
 
@@ -149,6 +153,17 @@ function photo_results(photos) {
     tags.forEach(function(tag, i) {
       if (i < 3)
         row(tag.name, tag.count)
+    })
+  }
+
+  function thumbnail(photo) {
+    DB.url(photo._id, function(er, url) {
+      if (er)
+        return console.log('Error getting photo URL: ' + photo._id)
+
+      var img = '<img src="' + url + '" />'
+      var html = '<li class="photo">' + img + '</li>'
+      thumbnails.append(html)
     })
   }
 

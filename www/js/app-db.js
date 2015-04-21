@@ -150,6 +150,21 @@ PouchBacked.prototype.store = function(photo, callback) {
   })
 }
 
+PouchBacked.prototype.url = function(id, callback) {
+  var self = this
+
+  self.db.get(id, {attachments:true}, function(er, doc) {
+    if (er)
+      return callback(er)
+
+    var type = doc._attachments.photo.content_type
+    var data = doc._attachments.photo.data
+    var url = 'data:' + type + ';base64,' + data
+
+    callback(null, url, type)
+  })
+}
+
 PouchBacked.prototype.online = function() {
   var self = this
 
