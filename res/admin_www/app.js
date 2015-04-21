@@ -1,7 +1,12 @@
 $(document).ready(function() {
   var primus = new Primus
+  var count = 0
+
   primus.on('data', function(msg) {
     if (msg.photo) {
+      count += 1
+      $('#stats').html('Total: ' + count + ' photos')
+
       var div = $('<div class="photo"></div>')
       div.append('<img src="' + msg.photo.url + '" />')
 
@@ -15,6 +20,8 @@ $(document).ready(function() {
       div.append('<p><strong>Tags:</strong> ' + msg.photo.tags.join(', ') + '</p>')
 
       $('.photos').append(div)
+
+      window.scrollTo(0,document.body.scrollHeight)
     }
   })
 })
