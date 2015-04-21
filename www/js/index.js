@@ -122,7 +122,7 @@ function photo_results(photos) {
   var result = jQuery('#search-result')
   result.empty()
 
-  row('<strong>Photos</strong>', photos.length)
+  row('Photos', photos.length)
 
   // Count the private photos and the tags.
   var private_count = 0
@@ -137,7 +137,7 @@ function photo_results(photos) {
     })
   }
 
-  row('<strong>Private photos</strong>', private_count)
+  row('Private photos', private_count)
 
   // Display the top 3 tags.
   tags = Object.keys(tags).map(function(name) { return {name:name, count:tags[name]} })

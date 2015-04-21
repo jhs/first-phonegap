@@ -18,18 +18,24 @@
           </div>
           <div role="main" class="ui-content">
             <form id="form-search">
-              <input name="photo-search" id="photo-search" placeholder="Search tag..." value="" type="search">
-
-              <div class="ui-field-contain">
+              <div class="ui-field-contain nearby-selector">
                 <label for="photo-search-near">Only nearby photos:</label>
                 <select name="photo-search-near" id="photo-search-near" data-role="flipswitch">
                   <option value="false" selected="">Off</option>
                   <option value="true">On</option>
                 </select>
               </div>
+              <input name="photo-search" id="photo-search" placeholder="Search tag..." value="" type="search">
             </form>
 
-            <div class="ui-grid-a" id="search-result"></div>
+            <div class="matching-photos">
+              <div class="found">
+                <h3>Found Photos</h3>
+                <a href="#view-photos" class="ui-btn ui-btn-b ui-btn-inline ui-icon-arrow-r ui-btn-icon-right" data-transition="slide">View</a>
+              </div>
+
+              <div class="ui-grid-a" id="search-result"></div>
+            </div>
 
             <button id="camera-button" class="ui-btn ui-btn-b ui-corner-all ui-icon-camera ui-btn-icon-left">Take a photo</button>
             <button id="library-button" class="ui-btn ui-btn-b ui-corner-all ui-icon-user ui-btn-icon-left">Photo library</button>

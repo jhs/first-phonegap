@@ -39,13 +39,27 @@ img.new-photo {
 
 #search-result {
   clear: both;
-  margin-top: 2em;
+  margin-top: 0;
   margin-bottom: 2em;
 }
 
-#search-result h3 {
-  margin-top: 0;
+.nearby-selector {
+  margin-bottom: 1.2em;
+}
+
+.matching-photos .found a {
+  margin-right: 0;
+  float: right;
+}
+
+.matching-photos .found h3 {
   margin-bottom: 0.5em;
+  display: inline;
+  float: left;
+}
+
+#search-result h3 {
+  margin: 0;
 }
 
 .ui-grid-a.left-third .ui-block-a { width: 35%; }
