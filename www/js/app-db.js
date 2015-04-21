@@ -200,7 +200,7 @@ PouchBacked.prototype.replicate = function(db_name) {
       if (er)
         console.log('Replication '+dir+' pause with error: ' + er.message)
       else {
-        console.log('Replication '+dir+' caught up')
+        console.log('Replication caught up: '+dir)
         set_state(dir, 'catchup')
       }
     }
