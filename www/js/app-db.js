@@ -4,7 +4,7 @@ function PouchBacked () {
   var self = this
 
   self.db = new PouchDB('photos')
-  self.replication = {'db': 'https://jhs.cloudant.com/photos', 'in':null, 'out':null}
+  self.replication = {'db': 'http://jhs.cloudant.com/photos', 'in':null, 'out':null}
 
   self.indexer = new Promise(build_index)
   self.indexer.then(function() {
