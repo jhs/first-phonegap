@@ -4,7 +4,8 @@
   "description": "Photo share app",
   "main": "index.js",
   "scripts": {
-    "start": "node dev-server.js",
+    "dev": "node dev-server.js",
+    "start": "node server.js",
     "test": "tap test/"
   },
   "repository": {
@@ -23,7 +24,7 @@
   },
   "homepage": "https://github.com/jhs/first-phonegap",
   "dependencies": {
-    "hapi": "^8.4.0",
+    "hapi": "^6.11.1",
     "primus": "^3.0.2",
     "request": "^2.55.0",
     "ws": "^0.7.1"
