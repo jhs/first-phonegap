@@ -89,3 +89,16 @@ img.new-photo {
   max-width: 70px;
   max-height: 70px;
 }
+
+#view-photo img.photo {
+  max-width: 95%;
+  max-height: 300px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#view-photo .metadata label {
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 0;
+}

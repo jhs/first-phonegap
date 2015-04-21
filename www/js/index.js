@@ -132,7 +132,8 @@ function photo_results(photos) {
   var tags = {}
 
   for (var i = 0; i < photos.length; i++) {
-    thumbnail(photos[i])
+    render_thumbnail(photos[i])
+
     if (photos[i].is_private)
       private_count += 1
 
@@ -156,14 +157,42 @@ function photo_results(photos) {
     })
   }
 
-  function thumbnail(photo) {
+  function render_thumbnail(photo) {
     DB.url(photo._id, function(er, url) {
       if (er)
         return console.log('Error getting photo URL: ' + photo._id)
 
-      var img = '<img src="' + url + '" />'
-      var html = '<li class="photo">' + img + '</li>'
-      thumbnails.append(html)
+      var img  = jQuery('<img />').attr('src', url)
+      var link = jQuery('<a href="#view-photo" data-transition="slide" data-id="'+photo._id+'"></a>')
+      link.transition = 'slide'
+      var li = jQuery('<li class="photo"></li>')
+      link.append(img)
+      li.append(link)
+      thumbnails.append(li)
+
+      link.click(function(ev) {
+        console.log('Show photo: ' + photo._id)
+        ev.preventDefault()
+
+        //var id = link.attr('data-id')
+
+        jQuery('#view-photo img.photo').attr('src', img.attr('src'))
+        //jQuery.mobile.navigate(link.attr('href'))
+        jQuery.mobile.changePage(link.attr('href'), {transition:'slide'})
+
+        var meta = jQuery('#view-photo .metadata')
+        meta.empty()
+
+        if (photo.is_private)
+          meta.append('<label>Private</label>')
+        else
+          meta.append('<label>Public</label>')
+
+        meta.append('<label>Description</label>')
+            .append('<p>' + (photo.description || '(No description)') + '</p>')
+            .append('<label>Tags</label>')
+            .append('<p>' + photo.tags.join(', ') + '</p>')
+      })
     })
   }
 
