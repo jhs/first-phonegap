@@ -1,9 +1,14 @@
 $(document).ready(function() {
   var primus = new Primus
   var count = 0
+  var seen = {}
 
   primus.on('data', function(msg) {
     if (msg.photo) {
+      if (seen[msg.photo._id])
+        return console.log('Dupe photo: ' + msg.photo._id)
+
+      seen[msg.photo._id] = true
       count += 1
       $('#stats').html('Total: ' + count + ' photos')
 
