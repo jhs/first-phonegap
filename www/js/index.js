@@ -26,11 +26,10 @@ function onDeviceReady() {
     return console.log('Error: jQuery.mobile not found')
 
   // For development
-  if (0)
-    return DB.destroy(function(er) {
-      if (er) throw er
-      $('body').html('Cleaned')
-    })
+  if (0) return DB.destroy(function(er) {
+           if (er) throw er
+           $('body').html('Cleaned')
+         })
 
   StatusBar.overlaysWebView(false)
   StatusBar.styleDefault()

@@ -4,7 +4,7 @@ function PouchBacked () {
   var self = this
 
   self.db = new PouchDB('photos')
-  self.replication = {'db': 'https://jhs.cloudant.com/photos', job:null}
+  self.replication = {'db': 'https://jhs.cloudant.com/photos', 'in':null, 'out':null}
 
   self.indexer = new Promise(build_index)
   self.indexer.then(function() {
@@ -168,30 +168,56 @@ PouchBacked.prototype.replicate = function(db_name) {
   var db_url = self.replication.db
   var opts = {live:true, retry:true}
 
-  if (!self.replication.job) {
-    self.replication.job = self.db.sync(self.replication.db, opts)
-    self.replication.job.on('paused', on_pause)
-    self.replication.job.on('active', on_active)
-    self.replication.job.on('error' , on_error)
+  // Track the state of both replications.
+  var state = {'in':'syncing', 'out':'syncing'}
+  function set_state(dir, value) {
+    console.log('State: '+dir+' = ' + value)
+    state[dir] = value
+    if (state.in == 'catchup' && state.out == 'catchup')
+      self.onState('Up to date', true)
+    else
+      self.onState('Syncing...')
   }
 
-  function on_pause(er) {
-    if (er)
-      console.log('Replication pause with error (perhaps going offline): ' + er.message)
-    else {
-      console.log('Replication caught up')
-      self.onState('Up to date', true)
+  if (!self.replication.in) {
+    console.log('Begin replication: in')
+    self.replication.in = self.db.replicate.from(self.replication.db, opts)
+    self.replication.in.on('paused', on_pause('in'))
+    self.replication.in.on('active', on_active('in'))
+    self.replication.in.on('error' , on_error('in'))
+  }
+
+  if (!self.replication.out) {
+    console.log('Begin replication: out')
+    self.replication.out = self.db.replicate.to(self.replication.db, opts)
+    self.replication.out.on('paused', on_pause('out'))
+    self.replication.out.on('active', on_active('out'))
+    self.replication.out.on('error' , on_error('out'))
+  }
+
+  function on_pause(dir) {
+    return function (er) {
+      if (er)
+        console.log('Replication '+dir+' pause with error: ' + er.message)
+      else {
+        console.log('Replication '+dir+' caught up')
+        set_state(dir, 'catchup')
+      }
     }
   }
 
-  function on_active() {
-    console.log('Replication active')
-    self.onState('Syncing...')
+  function on_active(dir) {
+    return function() {
+      console.log('Replication active: ' + dir)
+      set_state(dir, 'syncing')
+    }
   }
 
-  function on_error(er) {
-    console.log('ERROR Stop replication: ' + er.message)
-    self.replication.job.cancel()
+  function on_error(dir) {
+    return function(er) {
+      console.log('ERROR Stop replication '+dir+': ' + er.message)
+      self.replication[dir].cancel()
+    }
   }
 }
 
