@@ -97,7 +97,7 @@ function watch_couch(couch, creds, since) {
           PRIMUS.write({photo:photo})
       })
 
-      var wait = 10
+      var wait = 5
       if (res.body.results.length)
         since = res.body.results[res.body.results.length - 1].seq
 
