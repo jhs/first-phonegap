@@ -72,9 +72,13 @@ function connection(sock) {
 }
 
 function watch_couch(couch, creds, since) {
+  console.log('Watch couch %s: %s', couch, since)
+
   var DB = 'https://' + creds + '@' + couch + '/photos'
-  since = since || 0
-  var url = DB + '/_changes?include_docs=true&since=' + since
+  var url = DB + '/_changes?include_docs=true'
+
+  if (since)
+    url += '&since=' + since
 
   request({url:url, json:true}, function(er, res) {
     if (er)
@@ -82,6 +86,7 @@ function watch_couch(couch, creds, since) {
     else if (res.statusCode != 200)
       console.log('Bad response: %j', res.body)
     else {
+      console.log('  Found %s updates', res.body.results.length)
       res.body.results.forEach(function(change) {
         var photo = change.doc
         photo.url = 'http://' + couch + '/photos/' + change.id + '/photo'
@@ -91,6 +96,16 @@ function watch_couch(couch, creds, since) {
         if (PRIMUS)
           PRIMUS.write({photo:photo})
       })
+
+      var wait = 10
+      if (res.body.results.length)
+        since = res.body.results[res.body.results.length - 1].seq
+
+      console.log('Check again in %s seconds', wait)
+      setTimeout(re_run, wait * 1000)
+      function re_run() {
+        watch_couch(couch, creds, since)
+      }
     }
   })
 }
